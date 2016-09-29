@@ -1,0 +1,18 @@
+<div class="container">
+    <div class="row">
+      <div clas="col-sm-12">
+        <div class="table-responsive">
+          <table class="table">
+              <h4>My Plates</h4>
+            <tbody>
+              <tr ng-repeat="plate in myPlates">
+                <td ng-click="plateClicked(plate);">
+                  {{plate.state.abbreviation}} - {{plate.number}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+</div>

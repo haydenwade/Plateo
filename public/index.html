@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html ng-app="plateoApp">
+
+<head>
+    <link rel="stylesheet" href="./lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./lib/font-awesome/css/font-awesome.min.css" />
+
+    <link rel="stylesheet" href="./main.css" />
+    <script src="./lib/angular/angular.min.js"></script>
+    <script src="./lib/angular-route/angular-route.min.js"></script>
+    <script src="/app/app.module.js"></script>
+    <script src="/app/app.routes.js"></script>
+    <script src="/app/app.run.js"></script>
+    <script src="/app/app.constants.js"></script>
+    <script src="/app/components/services/userService.js"></script>
+    <script src="/app/components/services/plateService.js"></script>
+    <script src="/app/shared/login/auth.factory.js"></script>
+    <script src="/app/shared/login/login.js"></script>
+    <script src="/app/shared/register/register.js"></script>
+    <script src="/app/components/home/home.js"></script>
+    <script src="/app/components/myPlates/myPlates.js"></script>
+    <script src="/app/components/plate/plate.js"></script>
+    <script src="/app/components/search/plateSearch.js"></script>
+
+</head>
+
+<body ng-controller="mainController">
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <!-- <div class="navbar-header">
+                    <a class="navbar-brand" href="/">Plateo</a>
+                </div> -->
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="#plateSearch"><i class="fa fa-search"></i> Find</a></li>
+                    <li ng-show="showMenu"><a href="#myPlates"><i class="fa fa-comment"></i> My Plates</a></li>
+                    <li ng-show="showMenu"><a href="" ng-click="logout()"><i class="fa fa-sign-out"></i> Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div id="main">
+        <div ng-view></div>
+    </div>
+</body>
+
+</html>

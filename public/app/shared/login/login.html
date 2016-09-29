@@ -1,0 +1,17 @@
+<div class="container">
+    <legend>Login</legend>
+
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" id="username" placeholder="Username" ng-model="user.username">
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" placeholder="Password" ng-model="user.password" ng-keyup="keyPress($event.keyCode)">
+    </div>
+
+    <button type="button" ng-click="login()" class="btn btn-primary">Login</button>
+    <a href="#register">Register</a>
+    <div>{{errorMessage}}</div>
+</div>

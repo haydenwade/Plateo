@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="input-group my-group">
+                <input type="text" class="form-control" placeholder="Search a license plate number..." ng-model="enteredPlateNumber">
+                <select class="selectpicker form-control" data-live-search="true" ng-model="selectedState" ng-options="x.abbreviation for x in states"></select>
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit" ng-click="search()">Go!</button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+      <div clas="col-sm-12">
+        <div class="table-responsive">
+          <table class="table">
+            <tbody>
+              <tr ng-repeat="plate in searchResultPlates">
+                <td ng-click="plateClicked(plate);">
+                   {{plate.state.abbreviation}} - {{plate.number}}
+                </td>
+              </tr>
+              <tr ng-if="searchComplete">
+                <td>
+                  <a class="btn btn-default" href="#plate">Be first to add message to plate: <b>{{selectedState.abbreviation}} - {{enteredPlateNumber}}</b></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+</div>
