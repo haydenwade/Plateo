@@ -17,7 +17,7 @@ router.get('/comments/:id', comments.getComments);
 /*
  * Routes that can be accessed only by authenticated & authorized users
  */
-router.get('/api/v1/users', users.getAllUsers);
+router.get('/api/v1/users', users.getAllUsers);//debugging - remove from PROD
 
 router.get('/api/v1/plates/:id', plates.getPlatesForUser);
 router.post('/api/v1/plates/', plates.createPlate);

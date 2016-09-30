@@ -15,6 +15,7 @@ var auth = {
                   userManager.getUser(username, function(resp){
                     if(resp.status !== 401){
                       console.log('Logging in finished.');
+                      resp.password = '';
                       res.json({
                           token: genToken(username),
                           user: resp,
