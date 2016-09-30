@@ -2,7 +2,7 @@
 A web app that brings on conversation by connecting others via license plate numbers
 
 **Run me by using:**
-npm install
-bower install
-node server
-navigate to localhost:3000
+1. npm install
+2. bower install
+3. node server
+4. navigate to localhost:3000
