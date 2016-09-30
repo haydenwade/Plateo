@@ -1,2 +1,2 @@
 # Plateo
-A web app that brings on conversation by connection others via license plate numbers
+A web app that brings on conversation by connecting others via license plate numbers
