@@ -4,11 +4,12 @@ var usersManager = require('../routes/users.js');
 module.exports = function(req, res, next) {
 
     var token = req.headers['x-access-token'];
+    var expires = req.headers['expires'];
 
     if (token) {
         try {
             var decoded = jwt.decode(token, require('./secret.js')());
-            if (decoded.exp <= Date.now()) { //authentication
+            if (expires <= Date.now()) { //authentication
                 res.status(400);
                 res.json({
                     "status": 400,

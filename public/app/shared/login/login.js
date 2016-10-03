@@ -25,7 +25,8 @@ plateoApp.controller('loginController', function($scope, $window, $location, Use
                   AuthenticationFactory.user = data.user;
                   AuthenticationFactory.userRole = data.user.role;
 
-                  $window.localStorage.token = data.token;
+                  $window.localStorage.token = JSON.stringify(data.token); // set the token into local storage
+                  $window.localStorage.expires = data.expires; // set the time to expirer into local storage
                   $window.localStorage.user = data.user.username; // to fetch the user details on refresh
                   $window.localStorage.userRole = data.user.role; // to fetch the user details on refresh
                   userService.setCurrentUser(data.user);

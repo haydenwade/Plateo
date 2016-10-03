@@ -30,6 +30,7 @@ plateoApp.factory('UserAuthFactory', function ($window, $location, $http, consta
                 delete AuthenticationFactory.user;
                 delete AuthenticationFactory.userRole;
                 delete $window.localStorage.token;
+                delete $window.localStorage.expires;
                 delete $window.localStorage.user;
                 delete $window.localStorage.userRole;
 
@@ -52,8 +53,10 @@ plateoApp.factory('TokenInterceptor', function ($q, $window) {
     return {
         request: function (config) {
             config.headers = config.headers || {};
+            // Set the headers for auth based endpoints
             if ($window.localStorage.token) {
-                config.headers['X-Access-Token'] = $window.localStorage.token;
+                config.headers['X-Access-Token'] = JSON.parse(localStorage.getItem('token')),
+                config.headers['Expires'] = localStorage.getItem('expires'),
                 config.headers['Content-Type'] = "application/json";
             }
             return config || $q.when(config);

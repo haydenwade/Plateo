@@ -8,7 +8,7 @@ plateoApp.service('plateService2', function($resource, constants, Authentication
 
 plateoApp.service('plateService', function($q, $http, constants, userService, AuthenticationFactory) {
   var baseUrl = constants.apis.plateoApiBaseUrl;
-    var plateToShow = {}; //FIXME: Check to see if this is good practice to share across controllers, if not remove all references(getter, setter)
+  var plateToShow = {}; //FIXME: Check to see if this is good practice to share across controllers, if not remove all references(getter, setter)
     return {
         plateChoosen: function(plate) {
             console.log('setting plate', plate);
@@ -21,10 +21,6 @@ plateoApp.service('plateService', function($q, $http, constants, userService, Au
           return $http({
               method: 'POST',
               url: baseUrl + 'api/v1/plates/follow',
-              headers: {
-                  'Content-Type': 'application/json', //TODO can i use the TokenInterceptor
-                  'X-Access-Token': sessionStorage.token
-              },
               data: {
                   userId: AuthenticationFactory.user._id,
                   plateId: plateToShow._id,
@@ -41,7 +37,7 @@ plateoApp.service('plateService', function($q, $http, constants, userService, Au
         },
         getMyPlates: function() {
           console.log(AuthenticationFactory.user);//AuthenticationFactory.user._id,
-          return $http.get(baseUrl + 'api/v1/plates/' + 7,{'headers': {'Content-Type': 'application/json','X-Access-Token': sessionStorage.token}}).then(function(response){return response;});
+          return $http.get(baseUrl + 'api/v1/plates/' + 7).then(function(response){return response;});
         },
         getComments: function() {
            return $http.get(baseUrl + "comments/" + plateToShow._id).then(function(response) {
@@ -52,10 +48,6 @@ plateoApp.service('plateService', function($q, $http, constants, userService, Au
           return $http({
               method: 'POST',
               url: baseUrl + 'api/v1/plates/comment',
-              headers: {
-                  'Content-Type': 'application/json', //TODO can i use the TokenInterceptor
-                  'X-Access-Token': sessionStorage.token
-              },
               data: {
                   plateId: plateToShow._id,
                   comment : comment,
