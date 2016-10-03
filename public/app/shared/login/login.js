@@ -61,7 +61,10 @@ plateoApp.controller('loginController', function($scope, $window, $location, Use
                   UserAuthFactory.register(firstname, lastname, email, username, password).success(function (data) {
                       $scope.login();
                   }).error(function (status) {
-                      $scope.errorMessage = 'Oops look like we messed somthing up, please try again' + status;
+                      $scope.errorMessage = 'Oops look like we messed something up, please try again ';
+                      if (status !== null) {
+                        $scope.errorMessage += status.message;
+                      }
                   });
               } else {
                   $scope.errorMessage = 'Make sure to fill everything in, cheers!';
