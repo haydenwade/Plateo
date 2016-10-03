@@ -33,10 +33,11 @@ plateoApp.controller('loginController', function($scope, $window, $location, Use
                   $location.path("/plateSearch");
 
               }).error(function (status) {
-                  if (status.message == "Invalid credentials!") {
+                  if (status.message == "Invalid credentials!!") {
                       $scope.errorMessage = "Looks like we couldn't find a username associated with that password, please try again.";
-                  } else
+                  } else{
                       $scope.errorMessage = status.message;
+                    }
               });
           } else {
               if (password == '' && username !== '')

@@ -36,8 +36,7 @@ plateoApp.service('plateService', function($q, $http, constants, userService, Au
             });
         },
         getMyPlates: function() {
-          console.log(AuthenticationFactory.user);//AuthenticationFactory.user._id,
-          return $http.get(baseUrl + 'api/v1/plates/' + 7).then(function(response){return response;});
+          return $http.get(baseUrl + 'api/v1/plates/' + AuthenticationFactory.user._id).then(function(response){return response;});
         },
         getComments: function() {
            return $http.get(baseUrl + "comments/" + plateToShow._id).then(function(response) {

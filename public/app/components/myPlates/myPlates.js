@@ -7,8 +7,13 @@ plateoApp.controller('myPlatesController', function($scope, $location, plateServ
 
     var getMyPlatesPromise = plateService.getMyPlates();
     getMyPlatesPromise.then(function(response) {
-        vm.myPlates = response;
+      if(response.data){
+        vm.myPlates = response.data;
+      }
+      else{
+        vm.myPlates = [];
+      }
     }, function(response) {
-        //alert('Error happened getting my plates: ', JSON.stringify(response)); //TODO: appropriate error handling toastr, maybe
+        alert('Error happened getting my plates: ', JSON.stringify(response)); //TODO: appropriate error handling toastr, maybe
     });
 });
