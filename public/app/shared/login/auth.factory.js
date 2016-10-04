@@ -5,7 +5,7 @@ plateoApp.factory('AuthenticationFactory', function ($window) {
           console.log('Checking the magic!');
             if ($window.localStorage.token && $window.localStorage.user) {
                 this.isLogged = true;
-                this.user = $window.localStorage.user;
+                this.user = JSON.parse($window.localStorage.user);
             } else {
                 this.isLogged = false;
                 delete this.user;
