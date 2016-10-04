@@ -48,9 +48,10 @@ var auth = {
     register: function(req, res) {
       console.log('Registering...');
         var userAccountInfo = req.body;
+
         if (userAccountInfo.email.indexOf('@') > -1 && userAccountInfo.email.indexOf('.com') > -1) { //TODO: validate that it is a valid email
             if (userAccountInfo.password === userAccountInfo.verifyPassword) {
-                if (userAccountInfo.password.length >= 6) { //TODO: what else do I want to check length and contains upper and lower and special char
+                if (isStrongPassword(userAccountInfo.password, 6)) {
                     userManager.createUser(userAccountInfo, function(resp){
                       if(resp.status !== 401){
                         console.log('Registering finished.');
@@ -138,6 +139,35 @@ function areCredentialsValid(inUsername, inPassword, callback) {
             });
         }
     });
+}
+
+// validate if the given password is considered strong
+// a password is considered strong when it meets all the following requirements:
+// - contains at least 1 upper case letter
+// - contains at least 1 lower case letter
+// - contains at least 1 special character (here is considered as digit or symbol)
+//
+// NOTE: this function considers English letters only
+var isStrongPassword = function(password, minimumLength) {
+    var hasMinimumLength = password.length >= minimumLength;
+    var hasUppercase = false;
+    var hasLowercase = false;
+    var hasDigitOrSymbol = false;
+    for (var i = 0; i < password.length; i++) {
+        var ch = password.charAt(i);
+        if (ch >= 'A' && ch <= 'Z') {
+            hasUppercase = true;
+        } else if (ch >= 'a' && ch <= 'z') {
+            hasLowercase = true;
+        } else {
+            hasDigitOrSymbol = true;
+        }
+    }
+
+    return hasUppercase &&
+           hasLowercase &&
+           hasDigitOrSymbol &&
+           hasMinimumLength;
 }
 
 module.exports = auth;
