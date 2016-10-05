@@ -15,18 +15,14 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'app/**/*.js , tests/**/*.js',
-      'server.js , tests/api/aaTests.js',
-      '/*.js , tests/api/*.js',
-      '/*.js tests/api/*.js',
       'app/**/*.js , tests/**/*.js'
     ],
 
 
     // list of files to exclude
-    exclude: [
-      'public/lib/*.js'
-    ],
+    // exclude: [
+    //   'public/lib/*.js'
+    // ],
 
 
     // preprocess matching files before serving them to the browser
@@ -42,7 +38,7 @@ module.exports = function(config) {
 
 
     // web server port
-    port: 9876,
+    port: 3000,
 
 
     // enable / disable colors in the output (reporters and logs)
