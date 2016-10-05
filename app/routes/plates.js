@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 var MongoClient = require('mongodb').MongoClient;
 var autoIncrement = require("mongodb-autoincrement");
 var constants = require('../constants.js');
@@ -80,7 +81,7 @@ var plates = {
                     if (!error) {
                         //start of inner query
                         const plateIds = myPlates.map(function(item) {
-                            return item.plateId
+                            return item.plateId;
                         });
 
                         var collection2 = db.collection('plates');

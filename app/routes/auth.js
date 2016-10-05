@@ -168,6 +168,6 @@ var isStrongPassword = function(password, minimumLength) {
            hasLowercase &&
            hasDigitOrSymbol &&
            hasMinimumLength;
-}
+};
 
 module.exports = auth;
