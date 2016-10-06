@@ -36,6 +36,10 @@ var server = app.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + server.address().port);
 });
 
+exports.closeServer = function(){
+  server.close();
+};
+
 app.get('*', function(req, res) {
 	res.sendfile('./public/index.html');
 });
