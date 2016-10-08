@@ -70,7 +70,7 @@ var auth = {
                     res.status(401);
                     res.json({
                         status: 401,
-                        message: 'Make sure your password is at least 6 characters long.'
+                        message: 'Make sure your password includes an upper and lower case letters, a number or symbol, and is at least 6 characters long.'
                     });
                 }
             } else {

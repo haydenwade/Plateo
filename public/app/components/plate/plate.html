@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-12">
-            <h2>{{plate.state.name}} <i class="fa fa-asterisk" aria-hidden="true" ng-click="follow()"></i></h2>
+            <h2>{{plate.state.name}} <i class="btn" aria-hidden="true" ng-click="follow()" ng-class="{'btn-default': isFollowing, 'btn-primary' : !isFollowing}">Follow</i></h2>
             <h2>{{plate.number}}</h2>
             </br/>
         </div>

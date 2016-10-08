@@ -5,25 +5,50 @@ var constants = require('../constants.js');
 
 var plates = {
     createPlate: function(req, res) {
-      console.log('Creating Plate...');
+      console.log('See if we can create plate...');
         MongoClient.connect(constants.dbConnection, function(err, db) {
             autoIncrement.getNextSequence(db, 'plates', function(err, autoIndex) {
                 var collection = db.collection('plates');
                 if (!err) {
                     req.body._id = autoIndex;
-                    collection.insert(req.body, function(error, result) { //example of db error handling
-                        if (error) {
+                    var query = {
+                      number: {
+                          $eq: req.body.number
+                      },
+                      state : {
+                          $eq: req.body.state
+                      }
+                    };
+                    collection.find(query).toArray(function(error, plates) {
+                        if (!error) {
+                          if(plates.length == 0){
+                            console.log('Creating Plate...');
+                            collection.insert(req.body, function(error, result) { //example of db error handling
+                                if (error) {
+                                    res.status(401);
+                                    res.json({
+                                        status: 401,
+                                        message: 'We messed up trying to create your plate, sorry try again.',
+                                        errors: error
+                                    });
+                                } else {
+                                    console.log('Plate created.');
+                                    res.json({});
+                                }
+                                db.close();
+                            });
+                          }else{
+                            console.log('Plate already exists');
+                            res.json({message:'Plate not created, already existed.'});
+                          }
+                        } else {
                             res.status(401);
                             res.json({
                                 status: 401,
                                 message: 'We messed up trying to create your plate, sorry try again.',
                                 errors: error
                             });
-                        } else {
-                          console.log('Plate created.');
-                            res.json({});
                         }
-                        db.close();
                     });
                 } else {
                     res.status(401);
@@ -34,6 +59,40 @@ var plates = {
                     });
                 }
             });
+        });
+    },
+    getPlate: function(req, res) {
+      console.log('Getting plate...');
+        MongoClient.connect(constants.dbConnection, function(err, db) {
+            if (!err) {
+              var collection = db.collection('plates');
+              var query = {
+                _id: {
+                    $eq: parseInt(req.params.id)
+                }
+              }
+                collection.find(query).toArray(function(error, plate) {
+                    if (!error) {
+                      console.log('Got the plate.');
+                        res.json(plate);
+                    } else {
+                        res.status(401);
+                        res.json({
+                            status: 401,
+                            message: 'We messed up trying to get the plate.',
+                            errors: error
+                        });
+                    }
+                    db.close();
+                });
+            } else {
+                res.status(401);
+                res.json({
+                    status: 401,
+                    message: 'Database connection issues, sorry try again.',
+                    errors: err
+                });
+            }
         });
     },
     getAllPlates: function(req, res) {
@@ -76,7 +135,7 @@ var plates = {
                         $eq: parseInt(userId)
                     }
                 };
-                var projection = { };// _id : 1};
+                var projection = { };
                 collection.find(query, projection).toArray(function(error, myPlates) {
                     if (!error) {
                         //start of inner query
@@ -131,39 +190,138 @@ var plates = {
                     errors: err
                 });
             }
+
         });
     },
     followPlate: function(req, res) {
-      console.log('Following plate...');
-        MongoClient.connect(constants.dbConnection, function(err, db) {
-            autoIncrement.getNextSequence(db, 'plateMapper', function(err, autoIndex) {
+      console.log('Toggle following plate... ');
+      const request = {
+        userId: req.body.userId,
+        plateId: req.body.plateId
+      };
+      plates.isUserFollowingPrivate(request, function(resp){
+          if(!resp.errors){
+            if(!resp.isFollowing){
+              MongoClient.connect(constants.dbConnection, function(err, db) {
+                  autoIncrement.getNextSequence(db, 'plateMapper', function(err, autoIndex) {
+                      var collection = db.collection('plateMapper');
+                      if (!err) {
+                          req.body._id = autoIndex;
+                          collection.insert(req.body, function(error, result) { //example of db error handling
+                              if (error) {
+                                  res.status(401);
+                                  res.json({
+                                      status: 401,
+                                      message: 'We messed up trying to make you follow a  plate, sorry try again.',
+                                      errors: error
+                                  });
+                              } else {
+                                  console.log('Finished following plate.');
+                                  res.json({});
+                              }
+                              db.close();
+                          });
+                      } else {
+                          res.status(401);
+                          res.json({
+                              status: 401,
+                              message: 'Database connection issues, sorry try again.',
+                              errors: err
+                          });
+                      }
+                  });
+              });
+          } else{
+            MongoClient.connect(constants.dbConnection, function(err, db) {
+              if(!err){
                 var collection = db.collection('plateMapper');
-                if (!err) {
-                    req.body._id = autoIndex;
-                    collection.insert(req.body, function(error, result) { //example of db error handling
-                        if (error) {
-                            res.status(401);
-                            res.json({
-                                status: 401,
-                                message: 'We messed up trying to make you follow a  plate, sorry try again.',
-                                errors: error
-                            });
-                        } else {
-                          console.log('Finished following plate.');
-                            res.json({});
-                        }
-                        db.close();
-                    });
-                } else {
-                    res.status(401);
-                    res.json({
-                        status: 401,
-                        message: 'Database connection issues, sorry try again.',
-                        errors: err
-                    });
-                }
+                var query = {
+                  userId: {
+                      $eq: parseInt(request.userId)
+                  },
+                  plateId: {
+                      $eq: parseInt(request.plateId)
+                  }
+                };
+                collection.remove(query, function(error, result){
+                  if (error) {
+                      res.status(401);
+                      res.json({
+                          status: 401,
+                          message: 'We messed up trying to make you unfollow a plate, sorry try again.',
+                          errors: error
+                      });
+                  } else {
+                    console.log('Finished unfollowing plate.');
+                      res.json({});
+                  }
+                  db.close();
+                });
+              }else {
+                res.status(401);
+                res.json({
+                    status: 401,
+                    message: 'Database connection issues, sorry try again.',
+                    errors: err
+                });
+              }
             });
-        });
+          }
+        } else {
+          res.status(401);
+          res.json({
+              status: 401,
+              message: 'Something went wrong trying to check if user is following plate.',
+              errors: resp.errors
+          });
+        }
+      });
+    },
+    isUserFollowing: function(req, res) {
+      var request = {
+        userId : req.params.userId,
+        plateId : req.params.plateId
+      };
+      plates.isUserFollowingPrivate(request, function(resp) {
+          if(!resp.errors){
+              console.log('Finished getting status if user follows plate.');
+              res.json({isFollowing : resp.isFollowing});
+          }
+          else{
+            res.json({
+                status: 401,
+                message: 'Something went wrong trying to check if user is following plate.',
+                errors: resp.errors
+            });
+          }
+      });
+    },
+    isUserFollowingPrivate: function(request, callback) {
+      console.log('Checking if user is following plate: ', request);
+      MongoClient.connect(constants.dbConnection, function(err, db) {
+          if (!err) {
+            var collection = db.collection('plateMapper');
+            var query = {
+                userId: {
+                    $eq: parseInt(request.userId)
+                },
+                plateId: {
+                    $eq: parseInt(request.plateId)
+                }
+            };
+            collection.find(query).toArray(function(error, followingStatus) {
+                if (!error) {
+                    callback({isFollowing : followingStatus.length > 0});
+                } else {
+                    callback({errors: error});
+                }
+                db.close();
+            });
+          } else {
+            callback({errors: err});
+          }
+      });
     }
 };
+
 module.exports = plates;

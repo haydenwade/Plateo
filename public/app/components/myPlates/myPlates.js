@@ -1,8 +1,7 @@
 plateoApp.controller('myPlatesController', function($scope, $location, plateService) {
     var vm = $scope;
     vm.plateClicked = function(plate) {
-        plateService.plateChoosen(plate); //NOTE: no promise needed, just passing data between controllers
-        $location.path('plate');
+        $location.path('plate/' + plate._id);
     };
 
     var getMyPlatesPromise = plateService.getMyPlates();
