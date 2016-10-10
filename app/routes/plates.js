@@ -21,7 +21,7 @@ var plates = {
                     };
                     collection.find(query).toArray(function(error, plates) {
                         if (!error) {
-                          if(plates.length == 0){
+                          if(plates.length === 0){
                             console.log('Creating Plate...');
                             collection.insert(req.body, function(error, result) { //example of db error handling
                                 if (error) {
@@ -70,7 +70,7 @@ var plates = {
                 _id: {
                     $eq: parseInt(req.params.id)
                 }
-              }
+              };
                 collection.find(query).toArray(function(error, plate) {
                     if (!error) {
                       console.log('Got the plate.');
@@ -321,6 +321,43 @@ var plates = {
             callback({errors: err});
           }
       });
+    },
+    searchPlates: function (req, res){
+      console.log('Searching for plates...');
+        MongoClient.connect(constants.dbConnection, function(err, db) {
+            var collection = db.collection('plates');
+            if (!err) {
+              var query = {
+                number: {
+                    $eq: req.params.number.toString()
+                },
+                'state.name':{
+                    $eq: req.params.state.toString()
+                }
+              };
+              collection.find(query).toArray(function(error, plates) {
+              if (!error) {
+                console.log(plates);
+                  res.json(plates);
+              } else {
+                  res.status(401);
+                  res.json({
+                      status: 401,
+                      message: 'We messed up trying to search for plates.',
+                      errors: error
+                  });
+              }
+              db.close();
+            });
+            } else {
+                res.status(401);
+                res.json({
+                    status: 401,
+                    message: 'Database connection issues, sorry try again.',
+                    errors: err
+                });
+            }
+        });
     }
 };
 

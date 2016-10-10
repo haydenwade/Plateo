@@ -13,6 +13,7 @@ router.post('/login', auth.login);
 router.post('/register', auth.register);
 router.get('/plates', plates.getAllPlates);
 router.get('/plates/:id', plates.getPlate);
+router.get('/plates/:state/:number', plates.searchPlates);
 router.get('/comments/:id', comments.getComments);
 
 /*

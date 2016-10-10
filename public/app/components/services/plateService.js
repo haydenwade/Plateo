@@ -32,10 +32,15 @@ plateoApp.service('plateService', function($q, $http, constants, AuthenticationF
               return response.data;
           });
         },
-        searchPlates: function(plateNum, state) { //TODO: Search Functionality
+        loadPlates: function() {
             return $http.get(baseUrl + "plates").then(function(response) {
                 return response.data;
             });
+        },
+        searchPlates: function(state, number){
+          return $http.get(baseUrl + "plates/" + state + '/' + number).then(function(response) {
+              return response.data;
+          });
         },
         getMyPlates: function() {
           return $http.get(baseUrl + 'api/v1/plates/' + AuthenticationFactory.user._id).then(function(response){return response;});

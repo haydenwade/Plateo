@@ -1,12 +1,18 @@
 plateoApp.controller('searchController', function ($scope, $location, plateService) {
     var vm = $scope;
-
-    vm.search = function(){
+    vm.search = function (){
       const plateNum = vm.enteredPlateNumber;
       const state = vm.selectedState;
-
-      var searchPlatePromise = plateService.searchPlates(plateNum, state);
+      var searchPlatePromise = plateService.searchPlates(state.name.toString(), plateNum);
       searchPlatePromise.then(function(response){
+        vm.searchResultPlates = response;
+      },function(error){
+        alert('Error occured searching plates');
+      });
+    };
+    vm.initialize = function(){
+      var initPlatePromise = plateService.loadPlates();
+      initPlatePromise.then(function(response){
           vm.searchResultPlates = response;
       }, function(response){
          alert('Error occured while searching for plate: ', JSON.stringify(response));
@@ -23,7 +29,7 @@ plateoApp.controller('searchController', function ($scope, $location, plateServi
           alert('Error occured while creating plate: ', JSON.stringify(error));
       });
     };
-    vm.search();
+    vm.initialize();
     vm.states = [
         { name: 'ALABAMA', abbreviation: 'AL'},
         { name: 'ALASKA', abbreviation: 'AK'},
