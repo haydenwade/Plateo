@@ -1,5 +1,6 @@
-plateoApp.controller('searchController', function ($scope, $location, plateService) {
+plateoApp.controller('searchController', function ($scope, $location, plateService, AuthenticationFactory) {
     var vm = $scope;
+    vm.isLoggedIn = AuthenticationFactory.user ? true : false;
     vm.search = function (){
       const plateNum = vm.enteredPlateNumber;
       const state = vm.selectedState;

@@ -7,7 +7,7 @@
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="submit" ng-click="search()">Go!</button>
                 </span>
-                <span class="input-group-btn">
+                <span class="input-group-btn" ng-if="isLoggedIn">
                     <button class="btn btn-default" type="submit" ng-click="addPlate()">+</button>
                 </span>
             </div>
@@ -22,7 +22,7 @@
                 <td ng-click="plateClicked(plate);">
                    {{plate.state.abbreviation}} - {{plate.number}}
                 </td>
-              </tr>            
+              </tr>
             </tbody>
           </table>
         </div>
