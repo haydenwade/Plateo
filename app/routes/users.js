@@ -35,7 +35,6 @@ var users = {
     getUser: function(username, callback) {
       console.log('Getting user: ', username);
       this.doesUsernameExist(username, function(resp) {
-
           if (resp.doesExist) {
               MongoClient.connect(constants.dbConnection, function(err, db) {
                   if (!err) {
@@ -126,7 +125,7 @@ var users = {
             } else {
                 callback({
                     status: 401,
-                    message: 'Username is not unique.'
+                    message: 'Username already taken, please choose another one.'
                 });
             }
         });

@@ -12,5 +12,12 @@
     "mongodb-autoincrement": "^1.0.1",
     "ramda": "^0.22.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-jshint": "^2.0.1",
+    "gulp-livereload": "^3.8.1",
+    "gulp-nodemon": "^2.2.1",
+    "gulp-watch": "^4.3.10",
+    "jshint": "^2.9.3"
+  }
 }

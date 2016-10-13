@@ -12,17 +12,19 @@ var comments = require('./comments.js');
 router.post('/login', auth.login);
 router.post('/register', auth.register);
 router.get('/plates', plates.getAllPlates);
+router.get('/plates/:id', plates.getPlate);
+router.get('/plates/:state/:number', plates.searchPlates);
 router.get('/comments/:id', comments.getComments);
 
 /*
  * Routes that can be accessed only by authenticated & authorized users
  */
-router.get('/api/v1/users', users.getAllUsers);//debugging - remove from PROD
-
+router.get('/api/v1/users', users.getAllUsers);
 router.get('/api/v1/plates/:id', plates.getPlatesForUser);
 router.post('/api/v1/plates/', plates.createPlate);
 router.post('/api/v1/plates/comment', comments.addComment);
 router.post('/api/v1/plates/follow', plates.followPlate);
+router.get('/api/v1/plates/follow/:userId/:plateId', plates.isUserFollowing);
 
 
 

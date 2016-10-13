@@ -1,6 +1,6 @@
 var MongoClient = require('mongodb').MongoClient;
 var autoIncrement = require("mongodb-autoincrement");
-var ObjectID = require('mongodb').ObjectID
+var ObjectID = require('mongodb').ObjectID;
 var constants = require('../constants.js');
 
 var comments = {
