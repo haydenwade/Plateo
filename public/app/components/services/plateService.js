@@ -6,55 +6,79 @@ plateoApp.service('plateService2', function($resource, constants, Authentication
 
 
 
-plateoApp.service('plateService', function($q, $http, constants, userService, AuthenticationFactory) {
+plateoApp.service('plateService', function($q, $http, constants, AuthenticationFactory) {
   var baseUrl = constants.apis.plateoApiBaseUrl;
-  var plateToShow = {}; //FIXME: Check to see if this is good practice to share across controllers, if not remove all references(getter, setter)
     return {
-        plateChoosen: function(plate) {
-            console.log('setting plate', plate);
-            plateToShow = plate;
+        getPlate: function(plateId){
+          return $http.get(baseUrl + "plates/" + plateId).then(function(response) {
+              return response.data[0];
+          });
         },
-        getPlateToShow: function() {
-            return plateToShow;
-        },
-        follow: function() {
+        follow: function(plateId) {
           return $http({
               method: 'POST',
               url: baseUrl + 'api/v1/plates/follow',
               data: {
                   userId: AuthenticationFactory.user._id,
-                  plateId: plateToShow._id,
-                  createDateTime : new Date()
+                  plateId: plateId,
+                  createdDateTime : new Date()
               }
           }).then(function success(response) {
               return response;
           });
         },
-        searchPlates: function(plateNum, state) { //TODO: Search Functionality
+        getIsUserFollowing : function(userId, plateId){
+          return $http.get(baseUrl + "api/v1/plates/follow/" + userId + '/' + plateId).then(function(response) {
+              return response.data;
+          });
+        },
+        loadPlates: function() {
             return $http.get(baseUrl + "plates").then(function(response) {
                 return response.data;
             });
         },
-        getMyPlates: function() {
-          return $http.get(baseUrl + 'api/v1/plates/' + AuthenticationFactory.user._id).then(function(response){return response;});
-        },
-        getComments: function() {
-           return $http.get(baseUrl + "comments/" + plateToShow._id).then(function(response) {
+        searchPlates: function(state, number){
+          return $http.get(baseUrl + "plates/" + state + '/' + number).then(function(response) {
               return response.data;
           });
         },
-        addComment: function(comment) {
+        getMyPlates: function() {
+          return $http.get(baseUrl + 'api/v1/plates/' + AuthenticationFactory.user._id).then(function(response){return response;});
+        },
+        getComments: function(plateId) {
+           return $http.get(baseUrl + "comments/" + plateId).then(function(response) {
+              return response.data;
+          });
+        },
+        addComment: function(plateId, comment) {
           return $http({
               method: 'POST',
               url: baseUrl + 'api/v1/plates/comment',
               data: {
-                  plateId: plateToShow._id,
+                  plateId: plateId,
                   comment : comment,
                   user: {
                       userId: AuthenticationFactory.user._id,
                       username: AuthenticationFactory.user.username
                   },
-                  createDateTime : new Date()
+                  createdDateTime : new Date()
+              }
+          }).then(function success(response) {
+              return response;
+          });
+        },
+        createPlate: function(plateNumber, state){
+          return $http({
+              method: 'POST',
+              url: baseUrl + 'api/v1/plates',
+              data: {
+                  number: plateNumber,
+                  state : state,
+                  user: {
+                      userId: AuthenticationFactory.user._id,
+                      username: AuthenticationFactory.user.username
+                  },
+                  createdDateTime : new Date()
               }
           }).then(function success(response) {
               return response;

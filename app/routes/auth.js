@@ -16,6 +16,7 @@ var auth = {
                     if(resp.status !== 401){
                       console.log('Logging in finished.');
                       var token = genToken(username);
+                      resp.password = '';
                       res.json({
                           token: token.token,
                           expires: token.expires,
@@ -70,7 +71,7 @@ var auth = {
                     res.status(401);
                     res.json({
                         status: 401,
-                        message: 'Make sure your password is at least 6 characters long.'
+                        message: 'Make sure your password includes an upper and lower case letters, a number or symbol, and is at least 6 characters long.'
                     });
                 }
             } else {
@@ -168,6 +169,7 @@ var isStrongPassword = function(password, minimumLength) {
            hasLowercase &&
            hasDigitOrSymbol &&
            hasMinimumLength;
-}
+};
+
 
 module.exports = auth;

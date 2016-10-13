@@ -4,7 +4,7 @@ var usersManager = require('../routes/users.js');
 module.exports = function(req, res, next) {
 
     var token = req.headers['x-access-token'];
-    var expires = req.headers['expires'];
+    var expires = req.headers.expires;
 
     if (token) {
         try {
