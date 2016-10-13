@@ -4,31 +4,31 @@
     <form class="form-horizontal col-sm-8">
         <div class="form-group">
             <label>First Name</label>
-            <input type="text" class="form-control" data-placement="top" data-trigger="manual" data-content="Must be at least 1 characters long, and must only contain letters." ng-model="user.firstname" required>
+            <input type="text" class="form-control" ng-model="user.firstname">
         </div>
         <div class="form-group">
             <label>Last Name</label>
-            <input type="text" class="form-control" data-placement="top" data-trigger="manual" data-content="Must be at least 1 characters long, and must only contain letters." ng-model="user.lastname" required>
+            <input type="text" class="form-control" ng-model="user.lastname">
         </div>
         <div class="form-group">
             <label>Password</label>
-            <input type="password" class="form-control" data-placement="top" data-trigger="manual" data-content="Must be at least 8 characters long, and contain at least one number and one letter." ng-model="user.password" required>
+            <input type="password" class="form-control" ng-model="user.password">
         </div>
         <div class="form-group">
             <label>Verify Password</label>
-            <input type="password" class="form-control" data-placement="top" data-trigger="manual" data-content="Must match the above password." ng-model="user.verifypassword" required>
+            <input type="password" class="form-control" ng-model="user.verifypassword">
         </div>
         <div class="form-group">
             <label>E-Mail</label>
-            <input type="email" class="form-control" data-placement="top" data-trigger="manual" data-content="Must be a valid e-mail address (user@gmail.com)" ng-model="user.email" required>
+            <input type="text" class="form-control"  ng-model="user.email">
         </div>
         <div class="form-group">
             <label>Username</label>
-            <input type="text" class="form-control" data-placement="top" data-trigger="manual" data-content="Must be catchy username and at least 4 characters long." ng-model="user.username" required>
+            <input type="text" class="form-control"  ng-model="user.username">
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-primary pull-left" ng-click="register()">Register</button>
-            <p class="help-block pull-left text-danger hide" id="form-error">&nbsp; Make sure to fill in the correct information above. </p>
             <p>{{errorMessage}}</p>
+        </div>
     </form>
-    </div>
+</div>

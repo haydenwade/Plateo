@@ -7,6 +7,9 @@
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="submit" ng-click="search()">Go!</button>
                 </span>
+                <span class="input-group-btn" ng-if="isLoggedIn">
+                    <button class="btn btn-default" type="submit" ng-click="addPlate()">+</button>
+                </span>
             </div>
         </div>
     </div>
@@ -18,11 +21,6 @@
               <tr ng-repeat="plate in searchResultPlates">
                 <td ng-click="plateClicked(plate);">
                    {{plate.state.abbreviation}} - {{plate.number}}
-                </td>
-              </tr>
-              <tr ng-if="searchComplete">
-                <td>
-                  <a class="btn btn-default" href="#plate">Be first to add message to plate: <b>{{selectedState.abbreviation}} - {{enteredPlateNumber}}</b></a>
                 </td>
               </tr>
             </tbody>

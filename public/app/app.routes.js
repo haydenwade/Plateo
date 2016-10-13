@@ -23,7 +23,7 @@ plateoApp.config(function($routeProvider, $httpProvider) {
                 requiredLogin: true
             }
         })
-        .when('/plate', { //TODO: pass plate obj as parameter
+        .when('/plate/:id', { //TODO: pass plate obj as parameter
           templateUrl: 'app/components/plate/plate.html',
           controller: 'plateController',
           access: {
@@ -39,7 +39,7 @@ plateoApp.config(function($routeProvider, $httpProvider) {
         })
         .when('/register', {
             templateUrl: 'app/shared/register/register.html',
-            controller: 'loginController', //TODO: split controllers
+            controller: 'loginController',
             access: {
                 requiredLogin: false
             }

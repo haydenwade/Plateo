@@ -1,5 +1,36 @@
-plateoApp.controller('searchController', function ($scope, $location, plateService) {
+plateoApp.controller('searchController', function ($scope, $location, plateService, AuthenticationFactory) {
     var vm = $scope;
+    vm.isLoggedIn = AuthenticationFactory.user ? true : false;
+    vm.search = function (){
+      const plateNum = vm.enteredPlateNumber;
+      const state = vm.selectedState;
+      var searchPlatePromise = plateService.searchPlates(state.name.toString(), plateNum);
+      searchPlatePromise.then(function(response){
+        vm.searchResultPlates = response;
+      },function(error){
+        alert('Error occured searching plates');
+      });
+    };
+    vm.initialize = function(){
+      var initPlatePromise = plateService.loadPlates();
+      initPlatePromise.then(function(response){
+          vm.searchResultPlates = response;
+      }, function(response){
+         alert('Error occured while searching for plate: ', JSON.stringify(response));
+      });
+    };
+    vm.plateClicked = function(plate){
+      $location.path('plate/' + plate._id);
+    };
+    vm.addPlate = function(){
+      var createPlatePromise = plateService.createPlate(vm.enteredPlateNumber, vm.selectedState);
+      createPlatePromise.then(function(plateId){
+        vm.search();
+      }, function(error){
+          alert('Error occured while creating plate: ', JSON.stringify(error));
+      });
+    };
+    vm.initialize();
     vm.states = [
         { name: 'ALABAMA', abbreviation: 'AL'},
         { name: 'ALASKA', abbreviation: 'AK'},
@@ -62,24 +93,4 @@ plateoApp.controller('searchController', function ($scope, $location, plateServi
         { name: 'WYOMING', abbreviation: 'WY' }
     ];
     vm.selectedState = vm.states[0];
-    vm.searchComplete = false;
-    vm.search = function(){
-      vm.searchComplete = false;
-      const plateNum = vm.enteredPlateNumber;
-      const state = vm.selectedState;
-
-      var searchPlatePromise = plateService.searchPlates(plateNum, state);
-      searchPlatePromise.then(function(response){
-          vm.searchResultPlates = response;
-          if(vm.searchResultPlates.length === 0)//Adding plate if doesn't exist
-              vm.searchComplete = true;
-      }, function(response){
-         alert('Error occured while searching for plate: ', JSON.stringify(response));
-      });
-    };
-
-    vm.plateClicked = function(plate){
-      plateService.plateChoosen(plate); //NOTE: no promise needed just passing data between controllers
-      $location.path('plate');
-    };
 });
