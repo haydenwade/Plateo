@@ -16,6 +16,8 @@ var auth = {
                     if(resp.status !== 401){
                       console.log('Logging in finished.');
                       var token = genToken(username);
+                      resp.password = '';
+
                       res.json({
                           token: token.token,
                           expires: token.expires,
