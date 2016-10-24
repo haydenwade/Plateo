@@ -8,7 +8,13 @@ var users = {
         MongoClient.connect(constants.dbConnection, function(err, db) {
             if (!err) {
                 var collection = db.collection('plateUsers');
-                collection.find().toArray(function(error, users) {
+                var projection = {
+                  '_id':1,
+                  username:1,
+                  firstname:1,
+                  lastname:1
+                };
+                collection.find({},projection).toArray(function(error, users) {
                     if (!error) {
                       console.log('Got all users.');
                       res.json(users);
@@ -44,7 +50,15 @@ var users = {
                           $eq : username
                         }
                       };
-                      collection.find(query).toArray(function(error, users) {
+                      var projection = {
+                        '_id':1,
+                        username:1,
+                        firstname:1,
+                        lastname:1,
+                        email:1,
+                        role:1
+                      };
+                      collection.find(query,projection).toArray(function(error, users) {
                           if (!error) {
                             console.log('Got the user');
                               callback(users[0]);
@@ -87,7 +101,7 @@ var users = {
             if (!resp.doesExist) {
                 var user = {
                     username: req.username,
-                    fistname: req.firstname,
+                    firstname: req.firstname,
                     lastname: req.lastname,
                     email: req.email,
                     password: req.password,
